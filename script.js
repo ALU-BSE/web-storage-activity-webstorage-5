@@ -56,3 +56,66 @@ window.onload = function () {
       userEmail.split("@")[0];
   }
 };
+
+const defaultSettings = {
+  theme: 'dark',
+  fontSize: 16,
+  language: 'en'
+};
+
+function saveSettings(settings) {
+  localStorage.setItem('userSettings', JSON.stringify(settings));
+}
+
+function loadSettings() {
+  const savedSettings = localStorage.getItem('userSettings');
+  return savedSettings ? JSON.parse(savedSettings) : defaultSettings;
+}
+
+function applyTheme(theme) {
+  if (theme === 'light') {
+      document.body.classList.add('light-theme');
+  } else {
+      document.body.classList.remove('light-theme');
+  }
+}
+
+function toggleTheme() {
+  const settings = loadSettings();
+  settings.theme = settings.theme === 'light' ? 'dark' : 'light';
+  saveSettings(settings);
+  applyTheme(settings.theme);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const settings = loadSettings();
+  applyTheme(settings.theme);
+
+  const themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) {
+      themeToggle.addEventListener('click', toggleTheme);
+  }
+});
+
+window.onload = function() {
+  const authToken = getCookie('authToken');
+  const userEmail = getCookie('userEmail');
+  
+  if (authToken && userEmail) {
+      document.body.classList.add('is-logged-in');
+      document.getElementById('userDisplay').textContent = userEmail.split('@')[0];
+  }
+
+  const settings = loadSettings();
+  applyTheme(settings.theme);
+  document.documentElement.style.fontSize = `${settings.fontSize}px`;
+};
+
+function updateSettings(updates) {
+  const currentSettings = loadSettings();
+  const newSettings = { ...currentSettings, ...updates };
+  saveSettings(newSettings);
+  
+  applyTheme(newSettings.theme);
+  document.documentElement.style.fontSize = `${newSettings.fontSize}px`;
+}

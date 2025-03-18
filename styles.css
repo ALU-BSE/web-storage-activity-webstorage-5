@@ -166,3 +166,184 @@ body.is-logged-in .logged-in-view {
 body.is-logged-in .login-view {
     display: none;
 }
+
+:root {
+    --bg-color-light: #ffffff;
+    --text-color-light: #2d2d3a;
+    --input-bg-light: #f5f5f7;
+    --card-bg-light: #ffffff;
+    
+    --bg-color-dark: #2d2d3a;
+    --text-color-dark: #ffffff;
+    --input-bg-dark: #1e1e29;
+    --card-bg-dark: #1e1e29;
+}
+
+body {
+    transition: background-color 0.3s, color 0.3s;
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
+}
+
+body.light-theme {
+    background-color: var(--bg-color-light);
+    color: var(--text-color-light);
+}
+
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.theme-btn {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.theme-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.theme-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+}
+
+body .sun-icon {
+    display: none;
+}
+
+body .moon-icon {
+    display: block;
+}
+
+body.light-theme .sun-icon {
+    display: block;
+}
+
+body.light-theme .moon-icon {
+    display: none;
+}
+
+.login-container {
+    background-color: var(--card-bg-dark);
+    transition: background-color 0.3s;
+}
+
+body.light-theme .login-container {
+    background-color: var(--card-bg-light);
+}
+
+.form-control {
+    background-color: rgba(255, 255, 255, 0.1); 
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
+    box-shadow: none;
+    border: 1px solid #6b46c1;
+}
+
+body.light-theme .form-control {
+    background-color: white;
+    color: #2d2d3a;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+body.light-theme .form-control:focus {
+    background-color: white;
+    color: #2d2d3a;
+    border: 1px solid #6b46c1;
+}
+body.light-theme .text-white {
+    color: var(--text-color-light) !important;
+}
+
+body.light-theme .social-btn {
+    background-color: var(--input-bg-light);
+    color: var(--text-color-light);
+}
+
+.right-side h2,
+.right-side p {
+    color: white;
+}
+
+body.light-theme .right-side h2,
+body.light-theme .right-side p {
+    color: #2d2d3a;
+}
+.theme-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.theme-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+body.light-theme .theme-btn {
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #2d2d3a;
+}
+
+body.light-theme .theme-btn:hover {
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);}
+
+    body.light-theme .form-control::placeholder {
+        color: rgba(45, 45, 58, 0.6);
+    }
+    
+    .social-btn {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    body.light-theme .social-btn {
+        background-color: white;
+        color: #2d2d3a;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+        .text-muted {
+        color: rgba(255, 255, 255, 0.6) !important;
+    }
+    
+    body.light-theme .text-muted {
+        color: rgba(45, 45, 58, 0.6) !important;
+    }
