@@ -151,3 +151,18 @@ body {
 .text-purple {
     color: #6b46c1;
 }
+.logged-in-view {
+    display: none;
+}
+
+.login-view {
+    display: block;
+}
+
+body.is-logged-in .logged-in-view {
+    display: block;
+}
+
+body.is-logged-in .login-view {
+    display: none;
+}
