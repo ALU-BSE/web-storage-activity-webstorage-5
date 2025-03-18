@@ -1,0 +1,153 @@
+body {
+    background-color: #2d2d3a;
+}
+
+.login-container {
+    background-color: #1e1e29;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.left-side {
+    background: linear-gradient(rgba(107, 70, 193, 0.8), rgba(85, 60, 154, 0.9)),
+                url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80');
+    background-size: cover;
+    background-position: center;
+    padding: 40px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 700px;
+}
+
+.right-side {
+    padding: 60px 40px;
+    color: white;
+}
+
+.logo {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.tagline {
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.description {
+    font-size: 1.1rem;
+    opacity: 0.8;
+    margin-bottom: 30px;
+}
+
+.dots {
+    display: flex;
+    gap: 8px;
+    margin-top: 30px;
+}
+
+.dot {
+    width: 40px;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+.dot.active {
+    background-color: white;
+}
+
+.login-form {
+    margin-top: 30px;
+}
+
+.form-control {
+    background-color: white;
+    border: none;
+    padding: 15px;
+    color: black;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    background-color: #2d2d3a;
+    color: white;
+    box-shadow: none;
+    border: 1px solid #6b46c1;
+}
+
+.btn-login {
+    background-color: #6b46c1;
+    color: white;
+    padding: 15px;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin-top: 20px;
+}
+
+.btn-login:hover {
+    background-color: #553c9a;
+}
+
+.social-login {
+    margin-top: 40px;
+}
+
+.social-btn {
+    background-color: #2d2d3a;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+    background-color: #3d3d4a;
+}
+
+.divider {
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 45%;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.divider::before {
+    left: 0;
+}
+
+.divider::after {
+    right: 0;
+}
+
+.text-purple {
+    color: #6b46c1;
+}
