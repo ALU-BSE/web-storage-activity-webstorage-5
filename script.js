@@ -26,13 +26,19 @@ function handleLogin(event) {
 
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
+  const csrfToken = document.getElementById("csrfToken").value;
+
+  if (!validateCSRFToken(csrfToken)) {
+    showToast('Invalid security token. Please try again.');
+    return false;
+}
 
   if (email && password) {
     setCookie("authToken", btoa(email), 7);
     setCookie("userEmail", email, 7);
 
     document.body.classList.add("is-logged-in");
-    document.getElementById("userDisplay").textContent = email.split("@")[0];
+    document.getElementById("userDisplay").textContent = decodeURIComponent(email).split("@")[0];
     updateCartDisplay();
     initializeTheme();
     document.getElementById("loginForm").reset();
@@ -141,6 +147,7 @@ function saveCart(cart) {
 }
 
 function addToCart(product, price) {
+  const sanitizedProduct = sanitizeInput(product);
   const cart = initializeCart();
   const existingItem = cart.find(item => item.product === product);
   
@@ -148,14 +155,14 @@ function addToCart(product, price) {
       existingItem.quantity += 1;
   } else {
       cart.push({
-          product: product,
-          price: price,
+          product:sanitizedProduct,
+          price: parseFloat(price),
           quantity: 1
       });
   }
   
   saveCart(cart);
-  showToast(`Added ${product} to cart!`);
+  showToast(`Added ${decodeURIComponent(sanitizedProduct)} to cart!`);
 }
 
 function updateCartDisplay() {
@@ -217,4 +224,61 @@ function showToast(message) {
       toast.remove();
   }, 3000);
 }
+function generateCSRFToken() {
+  return Math.random().toString(36).substr(2);
+}
 
+function sanitizeInput(input) {
+  return encodeURIComponent(input);
+}
+
+function validateCSRFToken(token) {
+  return token === sessionStorage.getItem('csrfToken');
+}
+
+function updateCartDisplay() {
+  const cart = initializeCart();
+  const cartItems = document.getElementById('cartItems');
+  const cartCount = document.getElementById('cartCount');
+  const cartTotal = document.getElementById('cartTotal');
+  
+  cartItems.innerHTML = '';
+  let total = 0;
+  
+  cart.forEach(item => {
+      const itemTotal = item.price * item.quantity;
+      total += itemTotal;
+      
+      cartItems.innerHTML += `
+          <div class="cart-item">
+              <div>
+                  <h6 class="mb-0">${decodeURIComponent(item.product)}</h6>
+                  <small class="text-muted">$${parseFloat(item.price).toFixed(2)} × ${parseInt(item.quantity)}</small>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                  <span>$${itemTotal.toFixed(2)}</span>
+                  <button onclick="removeFromCart('${item.product}')" class="btn btn-sm btn-danger">
+                      <i class="fas fa-trash"></i>
+                  </button>
+              </div>
+          </div>
+      `;
+  });
+  
+  cartCount.textContent = cart.reduce((sum, item) => sum + parseInt(item.quantity), 0);
+  cartTotal.textContent = `$${total.toFixed(2)}`;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const csrfToken = generateCSRFToken();
+  sessionStorage.setItem('csrfToken', csrfToken);
+
+  const loginForm = document.getElementById('loginForm');
+  if (loginForm) {
+      loginForm.innerHTML += `
+          <input type="hidden" name="csrfToken" id="csrfToken" value="${csrfToken}">
+      `;
+      loginForm.addEventListener('submit', handleLogin);
+  }
+
+});
