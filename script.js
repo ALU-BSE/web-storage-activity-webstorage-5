@@ -33,10 +33,16 @@ function handleLogin(event) {
 
     document.body.classList.add("is-logged-in");
     document.getElementById("userDisplay").textContent = email.split("@")[0];
+    updateCartDisplay();
+    initializeTheme();
     document.getElementById("loginForm").reset();
   }
 
   return false;
+}
+function initializeTheme() {
+  const settings = loadSettings();
+  applyTheme(settings.theme);
 }
 
 function handleLogout() {
@@ -46,7 +52,7 @@ function handleLogout() {
   document.body.classList.remove("is-logged-in");
 }
 
-window.onload = function () {
+
   const authToken = getCookie("authToken");
   const userEmail = getCookie("userEmail");
 
@@ -54,8 +60,9 @@ window.onload = function () {
     document.body.classList.add("is-logged-in");
     document.getElementById("userDisplay").textContent =
       userEmail.split("@")[0];
+      updateCartDisplay();
   }
-};
+
 
 const defaultSettings = {
   theme: 'dark',
@@ -88,6 +95,10 @@ function toggleTheme() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  const loginForm = document.getElementById('loginForm');
+  if(loginForm) {
+    loginForm.addEventListener("submit", handleLogin)
+  }
   const settings = loadSettings();
   applyTheme(settings.theme);
 
@@ -119,3 +130,91 @@ function updateSettings(updates) {
   applyTheme(newSettings.theme);
   document.documentElement.style.fontSize = `${newSettings.fontSize}px`;
 }
+
+function initializeCart() {
+  return JSON.parse(sessionStorage.getItem('cart')) || [];
+}
+
+function saveCart(cart) {
+  sessionStorage.setItem('cart', JSON.stringify(cart));
+  updateCartDisplay();
+}
+
+function addToCart(product, price) {
+  const cart = initializeCart();
+  const existingItem = cart.find(item => item.product === product);
+  
+  if (existingItem) {
+      existingItem.quantity += 1;
+  } else {
+      cart.push({
+          product: product,
+          price: price,
+          quantity: 1
+      });
+  }
+  
+  saveCart(cart);
+  showToast(`Added ${product} to cart!`);
+}
+
+function updateCartDisplay() {
+  const cart = initializeCart();
+  const cartItems = document.getElementById('cartItems');
+  const cartCount = document.getElementById('cartCount');
+  const cartTotal = document.getElementById('cartTotal');
+  
+  cartItems.innerHTML = '';
+  let total = 0;
+  
+  cart.forEach(item => {
+      const itemTotal = item.price * item.quantity;
+      total += itemTotal;
+      
+      cartItems.innerHTML += `
+          <div class="cart-item">
+              <div>
+                  <h6 class="mb-0">${item.product}</h6>
+                  <small class="text-muted">$${item.price} × ${item.quantity}</small>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                  <span>$${itemTotal.toFixed(2)}</span>
+                  <button onclick="removeFromCart('${item.product}')" class="btn btn-sm btn-danger">
+                      <i class="fas fa-trash"></i>
+                  </button>
+              </div>
+          </div>
+      `;
+  });
+  
+  cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+  cartTotal.textContent = `$${total.toFixed(2)}`;
+}
+
+function clearCart() {
+  sessionStorage.removeItem('cart');
+  updateCartDisplay();
+  showToast('Cart cleared!');
+}
+
+function removeFromCart(product) {
+  const cart = initializeCart();
+  const index = cart.findIndex(item => item.product === product);
+  if (index > -1) {
+      cart.splice(index, 1);
+      saveCart(cart);
+      showToast(`Removed ${product} from cart!`);
+  }
+}
+
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+      toast.remove();
+  }, 3000);
+}
+
